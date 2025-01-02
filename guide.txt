@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Posting Page</title>
+    <style>
+        body {
+            font-family: "Poppins", Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        /* Global Styles */
+        * {
+            box-sizing: border-box;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Header Styles */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #4a90e2;
+            color: white;
+            padding: 15px 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .header .logout-btn {
+            background-color: #e53935;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .header .logout-btn:hover {
+            background-color: #c62828;
+        }
+
+        /* Main Container */
+        .main {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        /* Box Styles */
+        .box {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            min-width: 350px;
+            max-width: 450px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .box:hover {
+            /* transform: translateY(-5px); */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .box h2 {
+            margin-top: 0;
+            color: #4a90e2;
+            text-align: center;
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        /* Create Post Styles */
+        .post-create {
+            max-height: 200px;
+        }
+
+        .posts {
+            max-height: 475px;
+            overflow: auto;
+        }
+
+        .post-create input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .post-create input[type="text"]:focus {
+            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+        }
+
+        .post-create button {
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .post-create button:hover {
+            background-color: #357ab8;
+        }
+
+        /* Show Posts Styles */
+        .post-item {
+            padding: 5px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .post-item:last-child {
+            border-bottom: none;
+        }
+
+        .post-item p {
+            margin: 5px 0;
+            font-size: 15px;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .post-item span {
+            display: block;
+            font-size: 13px;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        .usernameAndLogout {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">Posting Web </div>
+        <div class="usernameAndLogout">
+            <strong>
+                <%= user.username.toUpperCase() %>
+            </strong>
+            <a href="/logout" class="logout-btn">Logout</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main">
+        <!-- Create Post Box -->
+        <div class="box post-create">
+            <h2>Create a Post</h2>
+            <form method="POST" action="/post">
+                <input type="text" id="postData" name="postData" placeholder="Write something..." required>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>
+                        <label>
+                            <input type="radio" name="isPublic" value="true" />Public
+                        </label>
+                        <label>
+                            <input type="radio" name="isPublic" value="false" checked />Private
+                        </label>
+                    </span>
+                    <button type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Show Posts Box -->
+        <div class="box posts">
+            <h2>Your Posts</h2>
+            <% if (sortedPosts.length <=0) { %>
+                <div style="display: flex; justify-content: center; align-items: center;">
+                    <p style="color: #777;">You havn't added any post yet...</p>
+                </div>
+                <% } else { %>
+                    <% sortedPosts.forEach(function(post){ %>
+                        <div class="post-item">
+                            <p style="display: flex; justify-content: space-between; cursor: pointer; ">
+                                <strong style="color: #777; cursor:auto;">
+                                    <%= post.isPublic ? "Public Post" : "Private Post" %>
+                                </strong>
+
+                                <span style="display: flex; gap: 10px; cursor: pointer;">
+                                    <a href="/like/<%= post._id %>" style="color: blue;">
+                                        <%= post.likes.length==1 ? 'Unlike 👎' : '👍 Like' %>
+                                    </a>
+                                    <a href="/edit/<%= post._id %>" style="color: #333;">Edit</a>
+                                    <a href="/post_delete/<%= post._id %>" style="color: #c62828; font-weight: 700;">
+                                        Delete
+                                    </a>
+                                </span>
+                            </p>
+
+                            <strong style=" word-break: break-all; ">
+                                <%= post.postData %>
+                            </strong>
+
+                            <p style="display: flex; justify-content: space-between;">
+                                <span>Posted on: <%= post.createdAt.toLocaleString() %> </span>
+                                <span>Likes : <%= post.likes.length %> </span>
+                            </p>
+                        </div>
+                        <% }) %>
+                            <% } %>
+                                <!-- public -->
+                                <h2>Public Posts</h2>
+                                <% publicPosts.forEach(post=> { %>
+                                    <div>
+                                        <p>
+                                            <%= post.postData %> <br>Created by <%= post.createdBy.username %>
+                                        </p>
+                                    </div>
+                                    <% }); %>
+        </div>
+    </div>
+</body>
+
+</html>
