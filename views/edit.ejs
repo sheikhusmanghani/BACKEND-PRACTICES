@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Post</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            height: 80vh;
+            width: 100vw;
+            font-family: "Poppins", Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .post-create {
+            background-color: white;
+            padding: 40px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .post-create h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #4a90e2;
+        }
+
+        .post-create input[type="text"] {
+            width: 90%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .post-create input[type="text"]:focus {
+            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+        }
+
+        .post-create button {
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .post-create button:hover {
+            background-color: #357ab8;
+        }
+        .back-option{
+            padding-top: 5px;
+            a{
+                text-decoration: none;
+                border-bottom: 2px solid #357ab8;
+                font-weight: bold;
+                color: #357ab8;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box post-create">
+        <h2>Edit Your Post</h2>
+        <form method="POST" action="/update/<%= post._id %>">
+            <input type="text" value="<%= post.postData %>" name="postData" placeholder="Edit your post">
+            <button type="submit">Submit</button>
+        </form>
+        <p class="back-option">
+            I don't want to edit, <a href="/profile"> so back it... </a>
+        </p>
+    </div>
+</body>
+
+</html>
