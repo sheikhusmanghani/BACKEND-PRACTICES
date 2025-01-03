@@ -5,11 +5,13 @@ const UserModel = require("./models/userModel");
 const jwt = require("jsonwebtoken");
 const { ProtectedRoute, isUserExist } = require("./middlewares");
 const postModel = require("./models/postModel");
+const path = require("path");
 const PORT = 8000;
 
 const app = express();
 
 // // Middlewares
+app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
