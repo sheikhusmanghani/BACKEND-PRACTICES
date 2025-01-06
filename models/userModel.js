@@ -1,7 +1,9 @@
 const mongoose = require("mongoose");
 
 mongoose
-  .connect("mongodb://localhost:27017/AuthTestApp")
+  .connect(
+    "mongodb+srv://posted-website:raheilm786@cluster0.ticu2.mongodb.net/AuthTestApp"
+  )
   .then(() => {
     console.log("DB ok hy");
   })

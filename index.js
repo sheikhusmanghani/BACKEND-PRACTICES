@@ -7,7 +7,6 @@ const { ProtectedRoute, isUserExist } = require("./middlewares");
 const postModel = require("./models/postModel");
 const path = require("path");
 const PORT = 8000;
-
 const app = express();
 
 // // Middlewares
